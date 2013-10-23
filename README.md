@@ -1,4 +1,9 @@
-IT1901-GR6_3
-============
+G6 - Simulator
+==============
 
-Repo3
+Written by:
+- Thomas Gautvedt
+- Aina Elisabeth Thunestveit
+- Geir Forslund
+- Roar Gjøvaag
+- Jostein Granli
