@@ -18,7 +18,7 @@ $base = new Base();
 // Check if logged in or not
 //
 
-if (!$base->userLoggedIn()) {
+if ($base->userLoggedIn()) {
     $base->display('index.tpl');
 }
 else {

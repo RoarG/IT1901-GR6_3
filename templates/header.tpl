@@ -15,6 +15,11 @@
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- Styling END -->
     
+    <!-- Libraries START -->
+    <script type="text/javascript" src="assets/js/lib/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="assets/js/lib/jquery-ui-1.10.3.min.js"></script>
+    <!-- Libraries END -->
+    
     <!-- Google Libs START -->
     <script type="text/javascript" src="http://www.google.com/jsapi"></script> 
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry&amp;key=AIzaSyCQFPTSj0WHj_zgEmLxbQk3METKu5q8bRA&amp;sensor=false&amp;language=no"></script>
@@ -28,9 +33,9 @@
 <div id="header">
     <div id="inner_header">
         <ul>
-            <li class="active"><a href="#">Hjem</a></li>
-            <li><a href="#">Kart</a></li>
-            <li><a href="#">Velg system</a></li>
+            <li class="active"><a href="index.php">Hjem</a></li>
+            <li><a href="map.php">Kart</a></li>
+            <li><a href="stats.php">Stats</a></li>
             <li><a href="#">Logg ut</a></li>
         </ul>
     </div>

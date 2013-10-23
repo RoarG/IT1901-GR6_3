@@ -124,5 +124,9 @@ a {
 }
 
 /*
-    Forms
+    Map
 */
+
+#map {
+    width: 100%;
+}
