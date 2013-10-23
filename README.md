@@ -5,5 +5,5 @@ Written by:
 - Thomas Gautvedt
 - Aina Elisabeth Thunestveit
 - Geir Forslund
-- Roar Gjøvaag
+- Roar GjÃ¸vaag
 - Jostein Granli

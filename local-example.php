@@ -20,5 +20,5 @@ define('DATABASE_PASSWORD','password');
 define('DATABASE_TABLE','prosjekt1');
 
 // Master password
-define('MASTER_PASSWORD', 'thomas');
+define('MASTER_PASSWORD', 'your_password_here');
 ?>

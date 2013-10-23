@@ -31,6 +31,7 @@ header('Content-Type: text/html; charset=utf-8');
 //
 
 require_once 'lib/password_hash/password_hash.php';
+require_once 'lib/smarty/Smarty.class.php';
 
 //
 // Trying to include local.php
@@ -55,7 +56,67 @@ else {
 class Base {
     
     //
+    // Variables
     //
+    
+    private $db; // Holds the database-connection
+    private $smarty; // Holds the smarty-library
+    
+    
     //
+    //  Constructor
+    //
+    
+    public function __construct () {
+        // Starting session
+        session_start();
+        
+        // Trying to connect to the database
+        try {
+            $this->db = new PDO("mysql:host=".DATABASE_HOST.";dbname=".DATABASE_TABLE, DATABASE_USER, DATABASE_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        } catch (Exception $e) {
+            $this->db = null;
+        }
+
+        // Authenticate if database-connection was successful
+        if (!$this->db) {
+            // Error goes here
+        }
+        
+        // Init Smarty
+        $this->smarty = $smarty = new Smarty();
+    }
+    
+    //
+    // Checking if the user is logged in or not
+    //
+    
+    public function userLoggedIn () {
+        if (isset($_SESSION['hash']) and $_SESSION['hash'] == MASTER_PASSWORD) {
+            // User is logged in
+            return true;
+        }
+        else {
+            // User is not logged in
+            return false;
+        }
+    }
+    
+    //
+    // Send redirect to user
+    //
+    
+    public function sendRedirect ($dest) {
+        // Sending user with header-location
+        header('Location: '.$dest);
+    }
+    
+    //
+    // Displaying a template using smarty
+    //
+    
+    public function display ($tpl) {
+        $this->smarty->display($tpl);
+    }
 }
 ?>

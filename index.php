@@ -7,4 +7,21 @@
  * 
 */
 
+//
+// Include and intiate base
+//
+
+require_once 'base.php';
+$base = new Base();
+
+//
+// Check if logged in or not
+//
+
+if ($base->userLoggedIn()) {
+    //
+}
+else {
+    $base->sendRedirect('login.php');
+}
 ?>
