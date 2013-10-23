@@ -103,12 +103,28 @@ class Base {
     }
     
     //
+    // Log the user in
+    //
+    
+    public function userLogin() {
+        $_SESSION['hash'] = MASTER_PASSWORD;
+    }
+    
+    //
     // Send redirect to user
     //
     
     public function sendRedirect ($dest) {
         // Sending user with header-location
         header('Location: '.$dest);
+    }
+    
+    //
+    // Assign value to smarty
+    //
+    
+    public function assign ($key, $val) {
+        $this->smarty->assign($key, $val);
     }
     
     //

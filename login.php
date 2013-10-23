@@ -25,7 +25,21 @@ if ($base->userLoggedIn()) {
 else {
     // User is not logged in, display
     if (isset($_POST['login'])) {
-        //
+        // Check if the password entered was correct
+        if ($_POST['master_pw'] == MASTER_PASSWORD) {
+            // The password was correct, log the user in
+            $base->userLogin();
+            
+            // Send him/her to the frontscreen
+            $base->sendRedirect('index.php');
+        }
+        else {
+            // The password was incorrect
+            $base->assign('error', true);
+            
+            // Display the template
+            $base->display('login.tpl');
+        }
     }
     else {
         // User has not tried to login already, display the template

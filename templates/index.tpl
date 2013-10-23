@@ -1,3 +1,3 @@
 [[+include file="header.tpl"]]
-Hjem
+<div id="map"></div>
 [[+include file="footer.tpl"]]

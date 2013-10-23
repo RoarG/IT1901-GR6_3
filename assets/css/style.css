@@ -1,0 +1,128 @@
+/*
+    Resets
+*/
+
+html,body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input { margin: 0; padding: 0; }
+h1,h2,h3,h4,h5,h6,pre,code,address,caption,cite,code,em,th { font-size: 1em; font-weight: normal; font-style: normal; }
+ul,ol { list-style: none; }
+fieldset,img { border: none; }
+caption,th { text-align: left; }
+table { border-collapse: collapse; border-spacing: 0; }
+.clear { clear: both;}
+div { position: relative; }
+
+/*
+    Main
+*/
+
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    color: #1C4094;
+    background: url('gfx/bg_lightblue.jpg') repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+#wrapper {
+    width: 640px;
+    min-height: 960px;
+    background-color: #fff;
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+a {
+    color: #1C4094;
+    text-decoration: none;
+}
+
+/*
+    Header
+*/
+
+#header {
+    background: url('gfx/tiles-norepeatx.png') no-repeat scroll 50% 0 #01153E;
+    height: 86px;
+    z-index: 999;
+}
+#inner_header {
+    width: 978px;
+    height: 86px;
+    margin: 0 auto;
+}
+#inner_header ul {
+    height: 63px;
+    padding: 23px 0 0 0;
+}
+#inner_header ul li {
+    float: left;
+}
+#inner_header ul li a {
+    border-radius: 3px 3px 0 0;
+    color: #FFFFFF;
+    display: block;
+    font-size: 15px;
+    height: 43px;
+    line-height: 43px;
+    padding: 0 40px 20px;
+    text-decoration: none;
+}
+#inner_header ul li a:hover {
+    text-decoration: underline;
+}
+#inner_header ul li.active a {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #1C4094;
+}
+
+/*
+    Login
+*/
+
+#login_holder {
+    width: 400px;
+    margin: 0 auto;
+    padding: 40px;
+    margin-top: 80px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+    color: #1C4094;
+}
+#login_holder h1 {
+    color: #1C4094;
+    font-size: 29px;
+    line-height: normal;
+    margin-bottom: 15px;
+}
+#login_holder input[type="password"] {
+    background-position: left top;
+    background-repeat: no-repeat;
+    border-radius: 3.5px 3.5px 3.5px 3.5px;
+    height: 36px;
+    width: 389px;
+    color: #1C4094;
+    font-size: 15px;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+#login_submit_holder {
+    width: 400px;
+    height: 40px;
+    text-align: right;
+    padding-top: 20px;
+}
+#login_submit_holder input {
+    border: 1px solid #8CC7ED;
+    border-radius: 6px 6px 6px 6px;
+    cursor: pointer;
+    height: 38px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #d4e5f5;
+    background-color: #1c3f93;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/*
+    Forms
+*/
