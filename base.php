@@ -39,11 +39,6 @@ require_once 'lib/smarty/Smarty.class.php';
 
 if (file_exists(dirname(__FILE__).'/local.php')) {
     require_once 'local.php';
-    
-    // Check if master-password is over the required length
-    if (strlen(MASTER_PASSWORD) < 10) {
-        die('The master password must be at least 10 characters long. Edit it in your local.php-file.');
-    }
 }
 else {
     die('You must copy the file local-example.php, rename it to local.php and include your database-information as well as master-password.');
@@ -61,7 +56,7 @@ class Base {
     
     private $db; // Holds the database-connection
     private $smarty; // Holds the smarty-library
-    
+    private $base_password = null; // Holds the master-password (cached)
     
     //
     //  Constructor
@@ -85,6 +80,9 @@ class Base {
         
         // Init Smarty
         $this->smarty = $smarty = new Smarty();
+        
+        // Set hash
+        $this->smarty->assign('hash', $_SESSION['hash']);
     }
     
     //
@@ -92,7 +90,8 @@ class Base {
     //
     
     public function userLoggedIn () {
-        if (isset($_SESSION['hash']) and $_SESSION['hash'] == MASTER_PASSWORD) {
+        // Check if password is fetched, fetch if not
+        if (isset($_SESSION['hash']) and $_SESSION['hash'] == $this->getMasterPassword()) {
             // User is logged in
             return true;
         }
@@ -107,7 +106,7 @@ class Base {
     //
     
     public function userLogin() {
-        $_SESSION['hash'] = MASTER_PASSWORD;
+        $_SESSION['hash'] = $this->getMasterPassword();
     }
     
     //
@@ -133,6 +132,32 @@ class Base {
     
     public function display ($tpl) {
         $this->smarty->display($tpl);
+    }
+    
+    //
+    // Fetch the master-password
+    //
+    
+    public function getMasterPassword () {
+        // Check if password is already sat
+        if ($this->base_password != null) {
+            // Already stored, just return
+            return $this->base_password;
+        }
+        else {
+            // Fetch from database
+            $get_master = "SELECT pswd
+            FROM master";
+            
+            $get_master_query = $this->db->query($get_master);
+            $row = $get_master_query->fetch(PDO::FETCH_ASSOC);
+            
+            // Set for caching
+            $this->base_password = $row['pswd'];
+            
+            // Return the password
+            return $row['pswd'];
+        }
     }
 }
 ?>

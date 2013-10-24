@@ -13,12 +13,14 @@
 
 require_once 'base.php';
 $base = new Base();
+$base->assign('script', 'index.php');
 
 //
 // Check if logged in or not
 //
 
 if ($base->userLoggedIn()) {
+    $base->assign('loggedIn', true);
     $base->display('index.tpl');
 }
 else {

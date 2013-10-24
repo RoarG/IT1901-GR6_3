@@ -22,4 +22,22 @@ $(document).ready(function () {
             mapTypeId: google.maps.MapTypeId.SATELLITE,
             streetViewControl: false});
     }
+    
+    //
+    // Chose system
+    //
+    
+    if ($('#chose_system').hasClass('on')) {
+        $.ajax ({
+            url: '../app/api/master/list?master='+$('#hash').val(),
+            cache: false,
+            headers: { 'cache-control': 'no-cache' },
+            dataType: 'json',
+            success: function(json) {
+                if (json.code == 200) {
+                    //
+                }
+            }
+        });
+    }
 });

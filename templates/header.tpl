@@ -30,12 +30,14 @@
     <!-- System END -->
 </head>
 <body>
+<input type="hidden" value="[[+$hash]]" name="hash" id="hash" />
+<div id="chose_system" class="[[+If $loggedIn]]on[[+else]]off[[+/If]]"></div>
 <div id="header">
     <div id="inner_header">
         <ul>
-            <li class="active"><a href="index.php">Hjem</a></li>
-            <li><a href="map.php">Kart</a></li>
-            <li><a href="stats.php">Stats</a></li>
+            <li[[+If $script == 'index.php']] class="active"[[+/If]]><a href="index.php">Hjem</a></li>
+            <li[[+If $script == 'map.php']] class="active"[[+/If]]><a href="map.php">Kart</a></li>
+            <li[[+If $script == 'stats.php']] class="active"[[+/If]]><a href="stats.php">Stats</a></li>
             <li><a href="#">Logg ut</a></li>
         </ul>
     </div>

@@ -13,6 +13,7 @@
 
 require_once 'base.php';
 $base = new Base();
+$base->assign('script', 'map.php');
 
 //
 // Check if logged in or not
@@ -24,6 +25,9 @@ if (!$base->userLoggedIn()) {
 }
 else {
     // User has not tried to login already, display the template
+    $base->assign('loggedIn', true);
+    
+    // Display the map
     $base->display('map.tpl');
 }
 ?>

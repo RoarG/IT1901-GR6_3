@@ -18,7 +18,4 @@ define('DATABASE_PASSWORD','password');
 
 // The table we are using
 define('DATABASE_TABLE','prosjekt1');
-
-// Master password
-define('MASTER_PASSWORD', 'your_password_here');
 ?>

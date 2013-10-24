@@ -13,6 +13,8 @@
 
 require_once 'base.php';
 $base = new Base();
+$base->assign('script', 'login.php');
+$base->assign('loggedIn', false);
 
 //
 // Check if logged in or not
@@ -26,7 +28,7 @@ else {
     // User is not logged in, display
     if (isset($_POST['login'])) {
         // Check if the password entered was correct
-        if ($_POST['master_pw'] == MASTER_PASSWORD) {
+        if (md5($_POST['master_pw']) == $base->getMasterPassword()) {
             // The password was correct, log the user in
             $base->userLogin();
             

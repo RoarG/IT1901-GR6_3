@@ -130,3 +130,22 @@ a {
 #map {
     width: 100%;
 }
+
+/*
+    Chose system
+*/
+
+#chose_system {
+    width: 300px;
+    height: 36px;
+    position: absolute;
+    right: 40px;
+    top: 126px;
+    background: #fff;
+    border: 1px solid gray;
+    z-index: 999;
+    display: none;
+}
+#chose_system.on {
+    display: block;
+}

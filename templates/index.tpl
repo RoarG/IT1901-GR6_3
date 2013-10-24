@@ -1,3 +1,5 @@
 [[+include file="header.tpl"]]
-<div id="map"></div>
+
+<p>Derps</p>
+
 [[+include file="footer.tpl"]]
