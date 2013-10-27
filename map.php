@@ -2,7 +2,7 @@
 /*
  * File: map.php
  * Holds: Displaying the map happens here
- * Last updated: 23.10.13
+ * Last updated: 27.10.13
  * Project: Prosjekt1
  * 
 */

@@ -142,7 +142,7 @@ a {
     width: 100%;
 }
 .map-overlay {
-    width: 300px;
+    width: 340px;
     height: 200px;
     padding: 20px;
 }
@@ -176,6 +176,49 @@ a {
     background-color: #E1A3AE;
     border: 1px solid #E1778A;
     color: red;
+}
+#map_controlls {
+    position: absolute;
+    left: 110px;
+    top: 110px;
+    width: 300px;
+    height: 200px;
+    background-color: #fff;
+    border: 1px solid gray;
+    z-index: 999;
+    padding: 20px;
+}
+#map_controlls h2 {
+    color: #1C4094;
+    font-size: 29px;
+    line-height: normal;
+    margin-bottom: 15px;
+}
+#map_controlls input[type="button"] {
+    background-color: #1C3F93;
+    border: 1px solid #8CC7ED;
+    border-radius: 6px 6px 6px 6px;
+    color: #D4E5F5;
+    cursor: pointer;
+    font-size: 19px;
+    font-weight: bold;
+    height: 40px;
+    padding-left: 7px;
+    padding-right: 7px;
+    position: absolute;
+    top: 18px;
+    left: 173px;
+}
+#map_controlls input[type="button"].off {
+    background-color: #E1A3AE;
+    border: 1px solid #E1778A;
+    color: red;
+}
+#map_controlls p {
+    color: #4D4D4D;
+    font-size: 19px;
+    line-height: 20px;
+    margin-bottom: 15px;
 }
 
 /*
@@ -249,7 +292,6 @@ li.system_holder_text.off {
     background-color: #fff;
     padding: 55px;
 }
-
 #main h1 {
     color: #1C4094;
     font-size: 29px;

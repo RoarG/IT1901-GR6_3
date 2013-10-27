@@ -2,7 +2,7 @@
 /*
  * File: base.php
  * Holds: Holds the system-information
- * Last updated: 23.10.13
+ * Last updated: 27.10.13
  * Project: Prosjekt1
  * 
 */
@@ -214,6 +214,23 @@ class Base {
         
         // Change location
         header("Location: map.php");
+    }
+    
+    //
+    // Return the sheep_token for the current system
+    //
+    
+    public function getSheepToken() {
+        // Fetch from database
+        $get_sheep_token = "SELECT sheep_token
+        FROM system
+        WHERE id = :id";
+        
+        $get_sheep_token_query = $this->db->prepare($get_sheep_token);
+        $get_sheep_token_query->execute(array(':id' => $_SESSION['sysid']));
+        $row = $get_sheep_token_query->fetch(PDO::FETCH_ASSOC);
+        
+        return $row['sheep_token'];
     }
 }
 ?>

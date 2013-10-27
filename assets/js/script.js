@@ -1,12 +1,48 @@
+//
+// Different methods we need
+//
+
+function is_numeric(strString) { // http://www.pbdr.com/vbtips/asp/JavaNumberValid.htm (modified)
+    var strValidChars = '0123456789';
+    var strChar;
+    var blnResult = true;
+
+    if (strString.length == 0) {
+        return false;
+    }
+    
+    for (i = 0; i < strString.length && blnResult == true; i++) {
+        strChar = strString.charAt(i);
+        if (strValidChars.indexOf(strChar) == -1) {
+            blnResult = false;
+        }
+    }
+    
+    return blnResult;
+}
+
+//
+// jQuery goes here
+//
+
 $(document).ready(function () {
+
     //
-    //
+    // Variables we need
     //
     
     var map = null;
     var map_objects = {'marker': [], 'infowindow': []};
     var map_num_to_id = {};
     var months = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
+    var sim_on = false;
+    var sim_time = new Date().getTime();
+    var sim_speed = $('#sim_speed').val();
+    var sim_interval = null;
+    var sim_update_time = 100;
+    var sim_update_progress = 0;
+    var sim_objects_current = 0;
+    var sim_objects_list = [];
     
     //
     // Everything related to maps
@@ -38,6 +74,12 @@ $(document).ready(function () {
         for (var i = 0; i < sheep_json.length; i++) {
             // Reference to current sheep
             var current_sheep = sheep_json[i];
+            
+            // Only animate not dead-sheeps (of course
+            if (current_sheep.alive == '1') {
+                // Update how many objects we hare working with
+                sim_objects_list.push(i);
+            }
             
             // Setting the correct id
             map_num_to_id['sheep_'+i] = current_sheep.id;
@@ -72,7 +114,7 @@ $(document).ready(function () {
             
             // Generate infowindow content and eventListener
             var temp_infowindow = new google.maps.InfoWindow({
-                content: '<div class="map-overlay"><h2>' + current_sheep.name+' (#'+current_sheep.identification+')'+'</h2><p><b>Status:</b> '+((current_sheep.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+current_sheep.lat+', '+current_sheep.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p> <input type="button" class="push_right" data-type="attack" value="Angrip" data-id="'+current_sheep.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-id="'+current_sheep.id+'"/> <input type="button" data-type="delete" class="red" value="Slett" data-id="'+current_sheep.id+'"/></div>'
+                content: '<div class="map-overlay"><h2>' + current_sheep.name+' (#'+current_sheep.identification+')'+'</h2><p><b>Status:</b> '+((current_sheep.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+current_sheep.lat+', '+current_sheep.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p> '+((current_sheep.alive == '1')?'<input type="button" class="push_right" data-type="attack" data-num="'+i+'" value="Angrip" data-id="'+current_sheep.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-id="'+current_sheep.id+'"/>':'')+'</div>'
             });
             
             // Add infowindow to the array
@@ -95,9 +137,205 @@ $(document).ready(function () {
                 return function() {
                     var point = map_objects.marker[key].getPosition();
                     
-                    // Todo, ajax goes here!
+                    $.ajax ({
+                        url: 'ajax_drag.php',
+                        cache: false,
+                        headers: { 'cache-control': 'no-cache' },
+                        dataType: 'json',
+                        type: 'post',
+                        data: {id :  map_num_to_id['sheep_'+key], 'num' : key, 'lat': point.lat(), 'lng' : point.lng()},
+                        success: function(json) {                    
+                            if (json.state == 'ok') {
+                                // Store reference
+                                var i = json.num;
+                                
+                                // Update position
+                                map_objects.marker[i].setPosition(new google.maps.LatLng(json.response.response.lat, json.response.response.lng));
+                                
+                                // Konverterer siste oppdatering
+                                var last_updated = json.response.response.last_updated.split(' ');
+                                var last_updated_date = last_updated[0].split('-');
+                                var last_updated_pretty = parseInt(last_updated_date[2])+'. '+months[parseInt(last_updated_date[1])-1]+' '+last_updated_date[0]+', kl: '+last_updated[1];
+                                
+                                // Update text
+                                map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" value="Angrip" data-num="'+i+'" data-id="'+json.response.response.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-id="'+json.response.response.id+'"/>':'')+'</div>');
+                            }
+                        }
+                    });
                 }
             }(i));
+        }
+        
+        // Update how often we should do some simulating
+        sim_update_time = ((sheep_json.length*3)/24)*60*60*1000;
+        
+        $('#sim_toggle').on('click', function () {
+            
+            if (sim_on) {
+                $(this).removeClass('off').val('Skru på');
+                sim_on = false;
+                clearInterval(sim_interval);
+            }
+            else {
+                $(this).addClass('off').val('Skru av');
+                sim_on = true;
+                sim_interval = setInterval(simulate, 100);
+            }
+        });
+        
+        // Remove all non-numeric-values
+        $('#sim_speed').on('keyup', function () {
+            // Variables
+            var new_val = '';
+            var val = $(this).val();
+            
+            // Loop each char, remove non-numeric
+            for (var i = 0; i < val.length; i++) {
+                var new_char = val[i];
+                if (is_numeric(new_char)) {
+                    new_val += new_char;
+                }
+            }
+            
+            // Check for valid values
+            if (new_val < 1) {
+                new_val = 1;
+            }
+            else if (new_val > 200) {
+                new_val = 200;
+            }
+            
+            // Re-apply the new value
+            $(this).val(new_val);
+            
+            // Store for sim
+            sim_speed = new_val;
+            
+            // Calculate the speed
+            var one_min_time = 60*sim_speed;
+            var one_min_hours = Math.floor(one_min_time / 3600);
+            one_min_time -= one_min_hours*3600;
+            var one_min_minutes = Math.floor(one_min_time / 60);
+            one_min_time -= one_min_minutes*60;
+            $('#sim_one_min_eq').html(one_min_hours + ' timer, '+ one_min_minutes+ ' minutter');
+        });
+        
+        $('#map').on('click', '.map-overlay input', function () {
+            var action_type = 'killed';
+            if (!$(this).hasClass('red')) {
+                action_type = 'wounded';
+            }
+            
+            $.ajax ({
+                url: 'ajax_action.php',
+                cache: false,
+                headers: { 'cache-control': 'no-cache' },
+                dataType: 'json',
+                type: 'post',
+                data: {id :  $(this).data('id'), 'type': action_type, num: $(this).data('num') },
+                success: function(json) {               
+                    if (json.state == 'ok') {
+                        // Store reference
+                        var i = json.num;
+                        
+                        // Update position
+                        map_objects.marker[i].setPosition(new google.maps.LatLng(json.response.response.lat, json.response.response.lng));
+                        
+                        // Konverterer siste oppdatering
+                        var last_updated = json.response.response.last_updated.split(' ');
+                        var last_updated_date = last_updated[0].split('-');
+                        var last_updated_pretty = parseInt(last_updated_date[2])+'. '+months[parseInt(last_updated_date[1])-1]+' '+last_updated_date[0]+', kl: '+last_updated[1];
+                        
+                        // Update text
+                        map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" value="Angrip" data-num="'+i+'" data-id="'+json.response.response.id+'"/> <input class="red" type="button" data-type="kill" data-num="'+i+'" value="Drep" data-id="'+json.response.response.id+'"/>':'')+'</div>');
+                        
+                        // Update marker-image
+                        var marker_image = 'marker_blue.png';
+                        if (json.response.response.alive == '0') {
+                            marker_image = 'marker_red.png';
+                        }
+                        
+                        map_objects.marker[i].setIcon({
+                            url: 'assets/css/gfx/markers/'+marker_image,
+                            size: new google.maps.Size(72, 72),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(37, 37)});
+                    }
+                }
+            });
+        });
+    }
+    
+    //
+    // Simulator
+    //
+    
+    function simulate() {
+        // Calculate new time
+        var sim_time_diff = (100*sim_speed);
+        var sim_time_now = sim_time + sim_time_diff;
+        
+        // Display clock
+        var sim_time_now_date = new Date(sim_time_now);
+        var hours = sim_time_now_date.getHours();
+        var minutes = sim_time_now_date.getMinutes();
+        var seconds = sim_time_now_date.getSeconds();
+        $('#sim_clock').html(((hours < 10)?'0':'')+hours + ':' + ((minutes < 10)?'0':'')+minutes + ':' + ((seconds < 10)?'0':'')+seconds);
+        
+        // Update the actual time
+        sim_time = sim_time_now;
+        
+        // Check the progress
+        sim_update_progress += sim_time_diff;
+        if (sim_update_progress >= sim_update_time) {
+            // Simulate sheep!
+            sim_update_progress = 0;
+            
+            $.ajax ({
+                url: 'ajax_sim.php',
+                cache: false,
+                headers: { 'cache-control': 'no-cache' },
+                dataType: 'json',
+                type: 'post',
+                data: {id :  map_num_to_id['sheep_'+sim_objects_list[sim_objects_current]], 'num' : sim_objects_list[sim_objects_current]},
+                success: function(json) {                    
+                    if (json.state == 'ok') {
+                        // Store reference
+                        var i = json.num;
+                        
+                        // Update position
+                        map_objects.marker[i].setPosition(new google.maps.LatLng(json.response.response.lat, json.response.response.lng));
+                        
+                        // Konverterer siste oppdatering
+                        var last_updated = json.response.response.last_updated.split(' ');
+                        var last_updated_date = last_updated[0].split('-');
+                        var last_updated_pretty = parseInt(last_updated_date[2])+'. '+months[parseInt(last_updated_date[1])-1]+' '+last_updated_date[0]+', kl: '+last_updated[1];
+                        
+                        // Update text
+                        map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" data-num="'+i+'" value="Angrip" data-id="'+json.response.response.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-id="'+json.response.response.id+'"/>':'')+'</div>');
+                        
+                        // Update marker-image
+                        var marker_image = 'marker_blue.png';
+                        if (json.response.response.alive == '0') {
+                            marker_image = 'marker_red.png';
+                        }
+                        
+                        map_objects.marker[i].setIcon({
+                            url: 'assets/css/gfx/markers/'+marker_image,
+                            size: new google.maps.Size(72, 72),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(37, 37)});
+                    }
+                }
+            });
+            
+            // Figure out what should be simulated the next time
+            if (sim_objects_current == (sim_objects_list.length - 1)) {
+                sim_objects_current = 0;
+            }
+            else {
+                sim_objects_current += 1;
+            }
         }
     }
     
