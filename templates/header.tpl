@@ -31,7 +31,7 @@
 </head>
 <body>
 <input type="hidden" value="[[+$hash]]" name="hash" id="hash" />
-<div id="chose_system" class="[[+If $loggedIn]]on[[+else]]off[[+/If]]"></div>
+<div id="chose_system" class="[[+If $loggedIn]]on[[+else]]off[[+/If]]">[[+$systems]]</div>
 <div id="header">
     <div id="inner_header">
         <ul>

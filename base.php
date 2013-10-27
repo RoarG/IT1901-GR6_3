@@ -170,6 +170,8 @@ class Base {
         
         // Only run the query if the user is already logged in
         if ($this->userLoggedIn()) {
+            $ret .= '<select name="systems_select" id="systems_select">';
+            
             $get_all_systems = "SELECT id, name, sheep_token
             FROM system
             ORDER BY name ASC";
@@ -177,8 +179,10 @@ class Base {
             $get_all_systems_query = $this->db->prepare($get_all_systems);
             $get_all_systems_query->execute();
             while ($row = $get_all_systems_query->fetch(PDO::FETCH_ASSOC)) {
-                $ret .= '<option value="">lalal</option>';
+                $ret .= '<option value="'.$row['id'].'">'.$row['name'].'</option>';
             }
+            
+            $ret .= '</select>';
         }
         
         $this->smarty->assign('systems', $ret);
