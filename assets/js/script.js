@@ -32,5 +32,9 @@ $(document).ready(function () {
             selectClass: 'selectFront',
             selectAutoWidth: false
         });
+        
+        $('#systems_select').on('change', function () {
+            $('#system_form').submit();
+        });
     }
 });

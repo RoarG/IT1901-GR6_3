@@ -43,7 +43,7 @@
             <li[[+If $script == 'stats.php']] class="active"[[+/If]]><a href="stats.php">Stats</a></li>
             <li[[+If $script == 'login.php']] class="active"[[+/If]]>[[+If $loggedIn]]<a href="logout.php">Logg ut[[+else]]<a href="login.php">Logg inn[[+/If]]</a></li>
             <li class="system_holder_text [[+If $loggedIn]]on[[+else]]off[[+/If]]"><span>System:</span></li>
-            <li class="system_holder [[+If $loggedIn]]on[[+else]]off[[+/If]]"><div id="chose_system_outer"><div id="chose_system">[[+$systems]]</div></div></li>
+            <li class="system_holder [[+If $loggedIn]]on[[+else]]off[[+/If]]"><div id="chose_system_outer"><div id="chose_system"><form action="" method="post" id="system_form" name="system_form">[[+$systems]]</form></div></div></li>
         </ul>
     </div>
 </div>

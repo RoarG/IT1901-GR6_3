@@ -83,6 +83,11 @@ class Base {
         
         // Set hash
         $this->smarty->assign('hash', ((isset($_SESSION['hash']))?$_SESSION['hash']:null));
+        
+        // Check if systemchange was submitted
+        if (isset($_POST['systemchange_was_submitted']) and $_POST['systemchange_was_submitted'] == 1) {
+            $this->changeSystem();
+        }
     }
     
     //
@@ -170,7 +175,13 @@ class Base {
         
         // Only run the query if the user is already logged in
         if ($this->userLoggedIn()) {
-            $ret .= '<select name="systems_select" id="systems_select">';
+            // Check if systemid is sat
+            $has_sysid = false;
+            if (isset($_SESSION['sysid'])) {
+                $has_sysid = true;
+            }
+            
+            $ret .= '<input type="hidden" name="systemchange_was_submitted" value="1" /><select name="systems_select" id="systems_select">';
             
             $get_all_systems = "SELECT id, name, sheep_token
             FROM system
@@ -179,13 +190,30 @@ class Base {
             $get_all_systems_query = $this->db->prepare($get_all_systems);
             $get_all_systems_query->execute();
             while ($row = $get_all_systems_query->fetch(PDO::FETCH_ASSOC)) {
-                $ret .= '<option value="'.$row['id'].'">'.$row['name'].'</option>';
+                if (!$has_sysid) {
+                    $_SESSION['sysid'] = $row['id'];
+                    $has_sysid = true;
+                }
+                
+                $ret .= '<option '.(($_SESSION['sysid'] == $row['id'])?'selected="selected"':'').' value="'.$row['id'].'">'.$row['name'].'</option>';
             }
             
             $ret .= '</select>';
         }
         
         $this->smarty->assign('systems', $ret);
+    }
+    
+    //
+    // 
+    //
+    
+    private function changeSystem () {
+        // Update sysid
+        $_SESSION['sysid'] = $_POST['systems_select'];
+        
+        // Change location
+        header("Location: map.php");
     }
 }
 ?>
