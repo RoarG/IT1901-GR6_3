@@ -131,6 +131,7 @@ class Base {
     //
     
     public function display ($tpl) {
+        $this->getSystemList();
         $this->smarty->display($tpl);
     }
     
@@ -158,6 +159,29 @@ class Base {
             // Return the password
             return $row['pswd'];
         }
+    }
+    
+    //
+    // 
+    //
+    
+    public function getSystemList() {
+        $ret = '';
+        
+        // Only run the query if the user is already logged in
+        if ($this->userLoggedIn()) {
+            $get_all_systems = "SELECT id, name, sheep_token
+            FROM system
+            ORDER BY name ASC";
+            
+            $get_all_systems_query = $this->db->prepare($get_all_systems);
+            $get_all_systems_query->execute();
+            while ($row = $get_all_systems_query->fetch(PDO::FETCH_ASSOC)) {
+                $ret .= '<option value="">lalal</option>';
+            }
+        }
+        
+        $this->smarty->assign('systems', $ret);
     }
 }
 ?>
