@@ -27,17 +27,10 @@ $(document).ready(function () {
     // Chose system
     //
     
-    if ($('#chose_system').hasClass('on')) {
-        $.ajax ({
-            url: '../app/api/master/list?master='+$('#hash').val(),
-            cache: false,
-            headers: { 'cache-control': 'no-cache' },
-            dataType: 'json',
-            success: function(json) {
-                if (json.code == 200) {
-                    //
-                }
-            }
+    if ($('#chose_system_outer').parent().hasClass('on')) {
+        $('#systems_select').uniform({
+            selectClass: 'selectFront',
+            selectAutoWidth: false
         });
     }
 });

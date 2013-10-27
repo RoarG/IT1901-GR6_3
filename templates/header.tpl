@@ -18,6 +18,7 @@
     <!-- Libraries START -->
     <script type="text/javascript" src="assets/js/lib/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="assets/js/lib/jquery-ui-1.10.3.min.js"></script>
+    <script type="text/javascript" src="assets/js/lib/jquery.uniform.min.js"></script>
     <!-- Libraries END -->
     
     <!-- Google Libs START -->
@@ -31,7 +32,6 @@
 </head>
 <body>
 <input type="hidden" value="[[+$hash]]" name="hash" id="hash" />
-<div id="chose_system" class="[[+If $loggedIn]]on[[+else]]off[[+/If]]">[[+$systems]]</div>
 <div id="header">
     <div id="inner_header">
         <ul>
@@ -39,6 +39,8 @@
             <li[[+If $script == 'map.php']] class="active"[[+/If]]><a href="map.php">Kart</a></li>
             <li[[+If $script == 'stats.php']] class="active"[[+/If]]><a href="stats.php">Stats</a></li>
             <li><a href="#">Logg ut</a></li>
+            <li class="system_holder_text [[+If $loggedIn]]on[[+else]]off[[+/If]]"><span>System:</span></li>
+            <li class="system_holder [[+If $loggedIn]]on[[+else]]off[[+/If]]"><div id="chose_system_outer"><div id="chose_system">[[+$systems]]</div></div></li>
         </ul>
     </div>
 </div>
