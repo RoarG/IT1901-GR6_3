@@ -20,6 +20,11 @@ $base->assign('script', 'map.php');
 //
 
 function find_center($arr) { // http://stackoverflow.com/a/14231286/921563
+    if (count($arr) == 0) {
+        return array('lat' => 60,
+                     'lng' => 10);
+    }
+    
     // Define all variables
     $x = 0;
     $y = 0;

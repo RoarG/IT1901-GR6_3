@@ -72,7 +72,7 @@ $(document).ready(function () {
             
             // Generate infowindow content and eventListener
             var temp_infowindow = new google.maps.InfoWindow({
-                content: '<div class="map-overlay"><h2>' + current_sheep.name+' (#'+current_sheep.identification+')'+'</h2><p><b>Status:</b> '+((current_sheep.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+current_sheep.lat+', '+current_sheep.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p> <input type="button" value="Vis info" data-id="'+current_sheep.id+'"/></div>'
+                content: '<div class="map-overlay"><h2>' + current_sheep.name+' (#'+current_sheep.identification+')'+'</h2><p><b>Status:</b> '+((current_sheep.alive == '1')?'Lever':'DÃ¸d')+'</p><p><b>Posisjon:</b> ['+current_sheep.lat+', '+current_sheep.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p> <input type="button" class="push_right" data-type="attack" value="Angrip" data-id="'+current_sheep.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-id="'+current_sheep.id+'"/> <input type="button" data-type="delete" class="red" value="Slett" data-id="'+current_sheep.id+'"/></div>'
             });
             
             // Add infowindow to the array
@@ -89,7 +89,7 @@ $(document).ready(function () {
             
             // All dragable-stuff goes here
             map_objects.marker[i].setDraggable(true);
-            console.log(map_num_to_id);
+            
             // The eventListener
             google.maps.event.addListener(map_objects.marker[i], 'dragend', function(key) {
                 return function() {
