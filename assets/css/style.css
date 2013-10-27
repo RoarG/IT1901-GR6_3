@@ -202,3 +202,27 @@ li.system_holder_text.off {
     width: 100%;
     background-color: #fff;
 }
+
+/*
+    Main
+*/
+
+#main {
+    width: 868.5px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 55px;
+}
+
+#main h1 {
+    color: #1C4094;
+    font-size: 29px;
+    line-height: normal;
+    margin-bottom: 15px;
+}
+#main p {
+    color: #4D4D4D;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 15px;
+}

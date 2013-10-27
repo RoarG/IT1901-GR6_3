@@ -54,7 +54,7 @@ class Base {
     // Variables
     //
     
-    private $db; // Holds the database-connection
+    public $db; // Holds the database-connection
     private $smarty; // Holds the smarty-library
     private $base_password = null; // Holds the master-password (cached)
     
@@ -62,7 +62,7 @@ class Base {
     //  Constructor
     //
     
-    public function __construct () {
+    public function __construct() {
         // Starting session
         session_start();
         
@@ -94,7 +94,7 @@ class Base {
     // Checking if the user is logged in or not
     //
     
-    public function userLoggedIn () {
+    public function userLoggedIn() {
         // Check if password is fetched, fetch if not
         if (isset($_SESSION['hash']) and $_SESSION['hash'] == $this->getMasterPassword()) {
             // User is logged in
@@ -118,7 +118,7 @@ class Base {
     // Send redirect to user
     //
     
-    public function sendRedirect ($dest) {
+    public function sendRedirect($dest) {
         // Sending user with header-location
         header('Location: '.$dest);
     }
@@ -135,7 +135,7 @@ class Base {
     // Displaying a template using smarty
     //
     
-    public function display ($tpl) {
+    public function display($tpl) {
         $this->getSystemList();
         $this->smarty->display($tpl);
     }
@@ -144,7 +144,7 @@ class Base {
     // Fetch the master-password
     //
     
-    public function getMasterPassword () {
+    public function getMasterPassword() {
         // Check if password is already sat
         if ($this->base_password != null) {
             // Already stored, just return
@@ -167,7 +167,7 @@ class Base {
     }
     
     //
-    // 
+    // Method that outputs all the systems available and selectes the current one
     //
     
     public function getSystemList() {
@@ -205,10 +205,10 @@ class Base {
     }
     
     //
-    // 
+    // Method that updates the current systemid
     //
     
-    private function changeSystem () {
+    private function changeSystem() {
         // Update sysid
         $_SESSION['sysid'] = $_POST['systems_select'];
         
