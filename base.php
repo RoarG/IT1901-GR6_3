@@ -82,7 +82,7 @@ class Base {
         $this->smarty = $smarty = new Smarty();
         
         // Set hash
-        $this->smarty->assign('hash', $_SESSION['hash']);
+        $this->smarty->assign('hash', ((isset($_SESSION['hash']))?$_SESSION['hash']:null));
     }
     
     //
