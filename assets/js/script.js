@@ -5,6 +5,7 @@ $(document).ready(function () {
     
     var map = null;
     var map_objects = {'marker': [], 'infowindow': []};
+    var map_num_to_id = {};
     var months = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
     
     //
@@ -37,6 +38,9 @@ $(document).ready(function () {
         for (var i = 0; i < sheep_json.length; i++) {
             // Reference to current sheep
             var current_sheep = sheep_json[i];
+            
+            // Setting the correct id
+            map_num_to_id['sheep_'+i] = current_sheep.id;
             
             // Defining the color of the marker
             var marker_image = 'marker_blue.png';
@@ -80,6 +84,18 @@ $(document).ready(function () {
                         map_objects.infowindow[j].close();
                     }
                     map_objects.infowindow[key].open(map, map_objects.marker[key]);
+                }
+            }(i));
+            
+            // All dragable-stuff goes here
+            map_objects.marker[i].setDraggable(true);
+            console.log(map_num_to_id);
+            // The eventListener
+            google.maps.event.addListener(map_objects.marker[i], 'dragend', function(key) {
+                return function() {
+                    var point = map_objects.marker[key].getPosition();
+                    
+                    // Todo, ajax goes here!
                 }
             }(i));
         }
