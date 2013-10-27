@@ -41,7 +41,7 @@
             <li[[+If $script == 'index.php']] class="active"[[+/If]]><a href="index.php">Hjem</a></li>
             <li[[+If $script == 'map.php']] class="active"[[+/If]]><a href="map.php">Kart</a></li>
             <li[[+If $script == 'stats.php']] class="active"[[+/If]]><a href="stats.php">Stats</a></li>
-            <li><a href="#">Logg ut</a></li>
+            <li[[+If $script == 'login.php']] class="active"[[+/If]]>[[+If $loggedIn]]<a href="logout.php">Logg ut[[+else]]<a href="login.php">Logg inn[[+/If]]</a></li>
             <li class="system_holder_text [[+If $loggedIn]]on[[+else]]off[[+/If]]"><span>System:</span></li>
             <li class="system_holder [[+If $loggedIn]]on[[+else]]off[[+/If]]"><div id="chose_system_outer"><div id="chose_system">[[+$systems]]</div></div></li>
         </ul>
