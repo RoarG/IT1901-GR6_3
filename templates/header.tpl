@@ -34,6 +34,9 @@
 <input type="hidden" value="[[+$hash]]" name="hash" id="hash" />
 <div id="header">
     <div id="inner_header">
+        <div id="toplogo">
+            <img width="170" height="39" alt="Sheep Locator" src="assets/css/gfx/sheep_locator_simlogo.png" />
+        </div>
         <ul>
             <li[[+If $script == 'index.php']] class="active"[[+/If]]><a href="index.php">Hjem</a></li>
             <li[[+If $script == 'map.php']] class="active"[[+/If]]><a href="map.php">Kart</a></li>
