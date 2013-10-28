@@ -1,8 +1,8 @@
 <?php
 /*
- * File: login.php
- * Holds: The file for logging into the simulator
- * Last updated: 23.10.13
+ * File: logout.php
+ * Holds: The file for logging out of the simulator
+ * Last updated: 28.10.13
  * Project: Prosjekt1
  * 
 */
@@ -21,8 +21,8 @@ $base->assign('loggedIn', false);
 //
 
 if (!$base->userLoggedIn()) {
-    // User is already logged in, he should be moved back to the home-screen
-    $base->sendRedirect('index.php');
+    // User is not logged in, redirect to login
+    $base->sendRedirect('login.php');
 }
 else {
     // Log user out
