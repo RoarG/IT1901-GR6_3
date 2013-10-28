@@ -115,6 +115,18 @@ class Base {
     }
     
     //
+    // Log the user out
+    //
+    
+    public function userLogout() {
+        // Removing masterpassword
+        unset($_SESSION['hash']);
+        
+        // Removing chosen system
+        unset($_SESSION['sysid']);
+    }
+    
+    //
     // Send redirect to user
     //
     
