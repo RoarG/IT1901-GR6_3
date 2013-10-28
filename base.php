@@ -2,7 +2,7 @@
 /*
  * File: base.php
  * Holds: Holds the system-information
- * Last updated: 27.10.13
+ * Last updated: 28.10.13
  * Project: Prosjekt1
  * 
 */
