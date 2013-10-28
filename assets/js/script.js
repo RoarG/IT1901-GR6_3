@@ -220,6 +220,16 @@ $(document).ready(function () {
                 action_type = 'wounded';
             }
             
+            // Remove killed object so it is not randomly moved anymore
+            if (action_type == 'killed') {
+                var this_id = $(this).data('id');
+                for (var i = 0; i < sim_objects_list.length; i++) {
+                    if (this_id == map_num_to_id['sheep_'+i]) {
+                        sim_objects_list.pop(i);
+                    }
+                }
+            }
+            
             $.ajax ({
                 url: 'ajax_action.php',
                 cache: false,
