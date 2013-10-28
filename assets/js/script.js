@@ -69,6 +69,10 @@ $(document).ready(function () {
             }
         });
         
+        // Dragable
+        $('#map_controlls').draggable();
+
+        // Method for calulcating what one minute in the simulator equals
         function calculate_one_min_eq() {
             var one_min_time = 60*sim_speed;
             var one_min_hours = Math.floor(one_min_time / 3600);
