@@ -220,10 +220,13 @@ a {
     color: red;
 }
 #map_controlls p {
-    color: #4D4D4D;
-    font-size: 19px;
+    color: #1C4094;
+    font-size: 16px;
     line-height: 20px;
     margin-bottom: 15px;
+}
+#map_controlls p span {
+    color: #4D4D4D;
 }
 #speed_holder {
     height: 16px;

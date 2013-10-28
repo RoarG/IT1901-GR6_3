@@ -13,7 +13,7 @@
 
 require_once 'base.php';
 $base = new Base();
-$base->assign('script', 'map.php');
+$base->assign('script', 'stats.php');
 
 if (!$base->userLoggedIn()) {
     // User is already logged in, he should be moved back to the home-screen
