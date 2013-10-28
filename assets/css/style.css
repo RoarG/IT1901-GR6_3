@@ -320,3 +320,30 @@ li.system_holder_text.off {
     line-height: 20px;
     margin-bottom: 15px;
 }
+
+/*
+    Table
+*/
+
+#main table {
+    text-align: left;
+    width: 100%;
+    margin-top: 20px;
+}
+#main td {
+    background-color: #E8F4FD;
+    border: 2px solid #FFFFFF;
+    color: #4D4D4D;
+    padding: 5px;
+}
+#main th {
+    background-color: #E8F4FD;
+    border: 2px solid #FFFFFF;
+    color: #1C4094;
+    padding: 5px;
+    font-size: 20px;
+
+}
+#main td b {
+    color: #1C4094;
+}

@@ -62,7 +62,7 @@ function find_center($arr) { // http://stackoverflow.com/a/14231286/921563
 
 if (!$base->userLoggedIn()) {
     // User is already logged in, he should be moved back to the home-screen
-    $base->sendRedirect('index.php');
+    $base->sendRedirect('login.php');
 }
 else {
     // User has not tried to login already, display the template
