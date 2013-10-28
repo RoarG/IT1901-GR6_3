@@ -4,9 +4,11 @@
 <div id="map_controlls">
     <h2>Simulering</h2>
     <input type="button" value="Skru på" id="sim_toggle" name="sim_toggle" />
-    <p>Fart: <input type="number" id="sim_speed" name="sim_speed" value="20" /><span id="fart_x">x</span>
-    <p>1 min. tilsvarer: <span id="sim_one_min_eq"></span></p>
-    <p>Tid: <span id="sim_clock"></span>
+    <div id="map_controlls_inner">
+        <p>Fart: <div id="speed_holder"><div id="speed"></div></div><span id="speed_val">20x</span>
+        <p>1 min.: <span id="sim_one_min_eq"></span></p>
+        <p>Klokka: <span id="sim_clock"></span>
+    </div>
 </div>
 <div id="map"></div>
 [[+include file="footer.tpl"]]

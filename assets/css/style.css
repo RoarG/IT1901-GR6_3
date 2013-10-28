@@ -65,7 +65,7 @@ a {
 }
 #inner_header ul li span {
     padding-right: 10px;
-    padding-left: 95px;
+    padding-left: 87px;
 }
 #inner_header ul li a:hover {
     text-decoration: underline;
@@ -89,7 +89,7 @@ a {
 #login_holder {
     width: 400px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 55px;
     margin-top: 80px;
     background: none repeat scroll 0 0 #FFFFFF;
     border-radius: 6px 6px 6px 6px;
@@ -184,7 +184,8 @@ a {
     width: 300px;
     height: 200px;
     background-color: #fff;
-    border: 1px solid gray;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 6px 6px;
     z-index: 999;
     padding: 20px;
 }
@@ -192,7 +193,7 @@ a {
     color: #1C4094;
     font-size: 29px;
     line-height: normal;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 #map_controlls input[type="button"] {
     background-color: #1C3F93;
@@ -207,7 +208,7 @@ a {
     padding-right: 7px;
     position: absolute;
     top: 18px;
-    left: 173px;
+    right: 20px;
 }
 #map_controlls input[type="button"].off {
     background-color: #E1A3AE;
@@ -219,6 +220,18 @@ a {
     font-size: 19px;
     line-height: 20px;
     margin-bottom: 15px;
+}
+#speed_holder {
+    height: 16px;
+    width: 200px;
+    position: absolute;
+    right: 50px;
+    top: 2px;
+}
+#speed_val {
+    position: absolute;
+    right: 1px;
+    top: 1px;
 }
 
 /*
@@ -291,6 +304,9 @@ li.system_holder_text.off {
     margin: 0 auto;
     background-color: #fff;
     padding: 55px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+    border-bottom-left-radius: 6px 6px;
+    border-bottom-right-radius: 6px 6px;
 }
 #main h1 {
     color: #1C4094;

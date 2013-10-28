@@ -12,6 +12,7 @@
     <!-- Meta END -->
     
     <!-- Styling START -->
+    <link rel="stylesheet" href="assets/css/ui/jquery-ui.min.css" />
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- Styling END -->
     

@@ -37,7 +37,7 @@ $(document).ready(function () {
     var months = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
     var sim_on = false;
     var sim_time = new Date().getTime();
-    var sim_speed = $('#sim_speed').val();
+    var sim_speed = 20;
     var sim_interval = null;
     var sim_update_time = 100;
     var sim_update_progress = 0;
@@ -48,8 +48,35 @@ $(document).ready(function () {
     // Everything related to maps
     //
     
+    
     if ($('#map').length > 0) {
         // We have a map!
+        
+        // Slider for speed
+        $('#speed').slider({
+            min: 1,
+            max: 350,
+            value: 20,
+            slide: function( event, ui ) {
+                // Update value
+                sim_speed = ui.value;
+                
+                // Update visible text
+                $('#speed_val').html(ui.value+'x');
+                
+                // Calculate
+                calculate_one_min_eq();
+            }
+        });
+        
+        function calculate_one_min_eq() {
+            var one_min_time = 60*sim_speed;
+            var one_min_hours = Math.floor(one_min_time / 3600);
+            one_min_time -= one_min_hours*3600;
+            var one_min_minutes = Math.floor(one_min_time / 60);
+            one_min_time -= one_min_minutes*60;
+            $('#sim_one_min_eq').html(one_min_hours + ' timer og '+ one_min_minutes+ ' minutter');
+        }
         
         // Set map-height
         $('#map').css('height', ($(window).innerHeight() - 86));
@@ -183,43 +210,6 @@ $(document).ready(function () {
             }
         });
         
-        // Remove all non-numeric-values
-        $('#sim_speed').on('keyup', function () {
-            // Variables
-            var new_val = '';
-            var val = $(this).val();
-            
-            // Loop each char, remove non-numeric
-            for (var i = 0; i < val.length; i++) {
-                var new_char = val[i];
-                if (is_numeric(new_char)) {
-                    new_val += new_char;
-                }
-            }
-            
-            // Check for valid values
-            if (new_val < 1) {
-                new_val = 1;
-            }
-            else if (new_val > 200) {
-                new_val = 200;
-            }
-            
-            // Re-apply the new value
-            $(this).val(new_val);
-            
-            // Store for sim
-            sim_speed = new_val;
-            
-            // Calculate the speed
-            var one_min_time = 60*sim_speed;
-            var one_min_hours = Math.floor(one_min_time / 3600);
-            one_min_time -= one_min_hours*3600;
-            var one_min_minutes = Math.floor(one_min_time / 60);
-            one_min_time -= one_min_minutes*60;
-            $('#sim_one_min_eq').html(one_min_hours + ' timer, '+ one_min_minutes+ ' minutter');
-        });
-        
         $('#map').on('click', '.map-overlay input', function () {
             var action_type = 'killed';
             if (!$(this).hasClass('red')) {
@@ -264,6 +254,17 @@ $(document).ready(function () {
                 }
             });
         });
+        
+        // Calculate initial
+        calculate_one_min_eq();
+        
+        // Initial clock
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        $('#sim_clock').html(((hours < 10)?'0':'')+hours + ':' + ((minutes < 10)?'0':'')+minutes + ':' + ((seconds < 10)?'0':'')+seconds);
+        
     }
     
     //
