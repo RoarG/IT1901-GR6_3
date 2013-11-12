@@ -34,6 +34,7 @@ $(document).ready(function () {
     var map = null;
     var map_objects = {'marker': [], 'infowindow': []};
     var map_num_to_id = {};
+    var map_num_to_id_num = 0;
     var months = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
     var sim_on = false;
     var sim_time = new Date().getTime();
@@ -114,6 +115,7 @@ $(document).ready(function () {
             
             // Setting the correct id
             map_num_to_id['sheep_'+i] = current_sheep.id;
+            map_num_to_id_num++;
             
             // Defining the color of the marker
             var marker_image = 'marker_blue.png';
@@ -223,7 +225,8 @@ $(document).ready(function () {
             // Remove killed object so it is not randomly moved anymore
             if (action_type == 'killed') {
                 var this_id = $(this).data('id');
-                for (var i = 0; i < sim_objects_list.length; i++) {
+                for (var i = 0; i < map_num_to_id_num; i++) {
+                    console.log(map_num_to_id['sheep_'+i]);
                     if (this_id == map_num_to_id['sheep_'+i]) {
                         sim_objects_list.pop(i);
                     }
