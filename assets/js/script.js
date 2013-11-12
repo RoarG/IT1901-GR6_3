@@ -100,6 +100,8 @@ $(document).ready(function () {
         map_objects.marker = [];
         map_objects.infowindow = [];
         
+        var sheep_alive_num = 0;
+        
         var sheep_json = jQuery.parseJSON($('#sheep_json').html());
         
         // Get all the sheeps and display them
@@ -111,6 +113,7 @@ $(document).ready(function () {
             if (current_sheep.alive == '1') {
                 // Update how many objects we hare working with
                 sim_objects_list.push(i);
+                sheep_alive_num++;
             }
             
             // Setting the correct id
@@ -200,7 +203,7 @@ $(document).ready(function () {
         }
         
         // Update how often we should do some simulating
-        sim_update_time = ((sheep_json.length*3)/24)*60*60*1000;
+        sim_update_time = (24*60*60*1000)/(sheep_alive_num*3);
         
         $('#sim_toggle').on('click', function () {
             
@@ -290,7 +293,7 @@ $(document).ready(function () {
     
     function simulate() {
         // Calculate new time
-        var sim_time_diff = (100*sim_speed);
+        var sim_time_diff = (1000*sim_speed);
         var sim_time_now = sim_time + sim_time_diff;
         
         // Display clock
@@ -305,6 +308,7 @@ $(document).ready(function () {
         
         // Check the progress
         sim_update_progress += sim_time_diff;
+        
         if (sim_update_progress >= sim_update_time) {
             // Simulate sheep!
             sim_update_progress = 0;
