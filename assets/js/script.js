@@ -114,7 +114,7 @@ $(document).ready(function () {
             }
             
             // Setting the correct id
-            map_num_to_id['sheep_'+i] = current_sheep.id;
+            map_num_to_id['sheep_'+i] = current_sheep.chip;
             map_num_to_id_num++;
             
             // Defining the color of the marker
@@ -147,7 +147,7 @@ $(document).ready(function () {
             
             // Generate infowindow content and eventListener
             var temp_infowindow = new google.maps.InfoWindow({
-                content: '<div class="map-overlay"><h2>' + current_sheep.name+' (#'+current_sheep.identification+')'+'</h2><p><b>Status:</b> '+((current_sheep.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+current_sheep.lat+', '+current_sheep.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p> '+((current_sheep.alive == '1')?'<input type="button" class="push_right" data-type="attack" data-num="'+i+'" value="Angrip" data-id="'+current_sheep.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-id="'+current_sheep.id+'"/>':'')+'</div>'
+                content: '<div class="map-overlay"><h2>' + current_sheep.name+' (#'+current_sheep.identification+')'+'</h2><p><b>Status:</b> '+((current_sheep.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+current_sheep.lat+', '+current_sheep.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p> '+((current_sheep.alive == '1')?'<input type="button" class="push_right" data-type="attack" data-num="'+i+'" value="Angrip" data-chip="'+current_sheep.chip+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-chip="'+current_sheep.chip+'"/>':'')+'</div>'
             });
             
             // Add infowindow to the array
@@ -217,6 +217,7 @@ $(document).ready(function () {
         });
         
         $('#map').on('click', '.map-overlay input', function () {
+            var this_chip = $(this).data('chip');
             var action_type = 'killed';
             if (!$(this).hasClass('red')) {
                 action_type = 'wounded';
@@ -224,9 +225,8 @@ $(document).ready(function () {
             
             // Remove killed object so it is not randomly moved anymore
             if (action_type == 'killed') {
-                var this_id = $(this).data('id');
+                var this_id = $(this).data('chip');
                 for (var i = 0; i < map_num_to_id_num; i++) {
-                    console.log(map_num_to_id['sheep_'+i]);
                     if (this_id == map_num_to_id['sheep_'+i]) {
                         sim_objects_list.pop(i);
                     }
@@ -239,7 +239,7 @@ $(document).ready(function () {
                 headers: { 'cache-control': 'no-cache' },
                 dataType: 'json',
                 type: 'post',
-                data: {id :  $(this).data('id'), 'type': action_type, num: $(this).data('num') },
+                data: {id :  $(this).data('chip'), 'type': action_type, num: $(this).data('num') },
                 success: function(json) {               
                     if (json.state == 'ok') {
                         // Store reference
@@ -254,7 +254,7 @@ $(document).ready(function () {
                         var last_updated_pretty = parseInt(last_updated_date[2])+'. '+months[parseInt(last_updated_date[1])-1]+' '+last_updated_date[0]+', kl: '+last_updated[1];
                         
                         // Update text
-                        map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" value="Angrip" data-num="'+i+'" data-id="'+json.response.response.id+'"/> <input class="red" type="button" data-type="kill" data-num="'+i+'" value="Drep" data-id="'+json.response.response.id+'"/>':'')+'</div>');
+                        map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" value="'+((this_chip == json.response.response.chip)?'Angrepet':'Angrip')+'" data-num="'+i+'" data-chip="'+json.response.response.chip+'"/> <input class="red" type="button" data-type="kill" data-num="'+i+'" value="Drep" data-chip="'+json.response.response.chip+'"/>':'')+'</div>');
                         
                         // Update marker-image
                         var marker_image = 'marker_blue.png';
@@ -330,7 +330,7 @@ $(document).ready(function () {
                         var last_updated_pretty = parseInt(last_updated_date[2])+'. '+months[parseInt(last_updated_date[1])-1]+' '+last_updated_date[0]+', kl: '+last_updated[1];
                         
                         // Update text
-                        map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" data-num="'+i+'" value="Angrip" data-id="'+json.response.response.id+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-id="'+json.response.response.id+'"/>':'')+'</div>');
+                        map_objects.infowindow[i].setContent('<div class="map-overlay"><h2>' + json.response.response.name+' (#'+json.response.response.identification+')'+'</h2><p><b>Status:</b> '+((json.response.response.alive == '1')?'Lever':'Død')+'</p><p><b>Posisjon:</b> ['+json.response.response.lat+', '+json.response.response.lng+']</p><p><b>Siste oppdatering:</b> '+last_updated_pretty+'</p>'+((json.response.response.alive == '1')?'<input type="button" class="push_right" data-type="attack" data-num="'+i+'" value="Angrip" data-chip="'+json.response.response.chip+'"/> <input class="red" type="button" data-type="kill" value="Drep" data-num="'+i+'" data-chip="'+json.response.response.chip+'"/>':'')+'</div>');
                         
                         // Update marker-image
                         var marker_image = 'marker_blue.png';
