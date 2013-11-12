@@ -92,7 +92,7 @@ if (isset($_GET['force']) and $_GET['force'] == 'true') {
             VALUES (:identification, :chip, :name, :birthday, :weight, :vaccine, :lat, :lng)";
                            
             $new_sheep_query = $base->db->prepare($new_sheep);
-            $new_sheep_query->execute(array(':identification' => '1000000'.$j, ':chip' => '1000000'.$j, ':name' => 'Sau #'.$i, ':birthday' => rand(2007, 2013).'-'.rand(1, 12).'-'.rand(0, 28), ':weight' => rand(10, 70), ':vaccine' => rand(0, 1), ':lat' => $new_pos['lat'], ':lng' => $new_pos['lng']));
+            $new_sheep_query->execute(array(':identification' => '1000000'.$j, ':chip' => '1000000'.$j, ':name' => 'Sau #'.$j, ':birthday' => rand(2007, 2013).'-'.rand(1, 12).'-'.rand(0, 28), ':weight' => rand(10, 70), ':vaccine' => rand(0, 1), ':lat' => $new_pos['lat'], ':lng' => $new_pos['lng']));
             
             // Get the sheep-id
             $sheep_id = $base->db->lastInsertId();
