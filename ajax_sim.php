@@ -149,15 +149,6 @@ if ($base->userLoggedIn()) {
         // Find the new distance from the center
         $enw_distance_from_center = distance($new_pos['lat'], $new_pos['lng'], $center['lat'], $center['lng']);
         
-        // Debug
-        /*
-        echo 'Current position: '.$current['lat'].' '.$current['lng'].'<br />';
-        echo 'Center: '.$center['lat'].' '.$center['lng'].'<br />';
-        echo 'Distance from center: '.$distance_from_center.'<br />';
-        echo 'Movement: '.$movement.', angle: '.$angle.'<br />';
-        echo 'New: '.$new_pos['lat'].' '.$new_pos['lng'].'<br />';
-        echo 'New distance from center: '.$enw_distance_from_center.'<br />';*/
-        
         // Get the api-url
         $api_url = str_replace('simulator/ajax_sim.php', '', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']).'app/api';
         
